@@ -1,0 +1,6 @@
+[ 2026-08-27 21:47:34,686 ] root - INFO - dowenloading data ......
+[ 2026-08-27 21:47:34,939 ] urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.kaggle.com:443
+[ 2026-08-27 21:47:35,440 ] urllib3.connectionpool - DEBUG - https://api.kaggle.com:443 "POST /v1/datasets.DatasetApiService/GetDataset HTTP/1.1" 200 None
+[ 2026-08-27 21:47:35,460 ] root - INFO - Done Data dowenloaded
+[ 2026-08-27 21:47:35,462 ] root - INFO - loading data .....
+[ 2026-08-27 21:47:35,549 ] root - INFO - done loading dataframe

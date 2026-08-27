@@ -1,0 +1,9 @@
+.venv/
+.git/
+.vscode/
+__pycache__/
+*.pyc
+logs/
+.ipynb_checkpoints/
+.pytest_cache/
+.github/

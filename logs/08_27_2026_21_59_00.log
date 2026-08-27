@@ -1,0 +1,22 @@
+[ 2026-08-27 21:59:05,708 ] root - INFO - yaml file: config/config.yaml loaded successfully
+[ 2026-08-27 21:59:05,708 ] root - INFO - yaml file: config/params.yaml loaded successfully
+[ 2026-08-27 21:59:05,710 ] root - INFO - yaml file: config/schema.yaml loaded successfully
+[ 2026-08-27 21:59:05,710 ] root - INFO - created directory at: artifacts
+[ 2026-08-27 21:59:05,710 ] root - INFO - >>>>>> Data Ingestion started <<<<<<
+[ 2026-08-27 21:59:05,710 ] root - INFO - created directory at: artifacts/data_ingestion
+[ 2026-08-27 21:59:05,710 ] root - INFO - Downloading data from kagglehub...
+[ 2026-08-27 21:59:06,105 ] urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.kaggle.com:443
+[ 2026-08-27 21:59:06,647 ] urllib3.connectionpool - DEBUG - https://api.kaggle.com:443 "POST /v1/datasets.DatasetApiService/GetDataset HTTP/1.1" 200 None
+[ 2026-08-27 21:59:06,653 ] root - INFO - Data downloaded to: /home/mg/.cache/kagglehub/datasets/blastchar/telco-customer-churn/versions/1
+[ 2026-08-27 21:59:06,653 ] root - INFO - Copying data to artifacts folder...
+[ 2026-08-27 21:59:06,655 ] root - INFO - Data copied to: artifacts/data_ingestion/WA_Fn-UseC_-Telco-Customer-Churn.csv
+[ 2026-08-27 21:59:06,655 ] root - INFO - >>>>>> Data Ingestion completed <<<<<<
+[ 2026-08-27 21:59:06,655 ] root - INFO - >>>>>> Data Validation started <<<<<<
+[ 2026-08-27 21:59:06,655 ] root - INFO - created directory at: artifacts/data_validation
+[ 2026-08-27 21:59:06,725 ] root - INFO - >>>>>> Data Validation completed <<<<<<
+[ 2026-08-27 21:59:06,725 ] root - INFO - >>>>>> Data Transformation started <<<<<<
+[ 2026-08-27 21:59:06,725 ] root - INFO - created directory at: artifacts/data_transformation
+[ 2026-08-27 21:59:06,760 ] root - INFO - Cleaning data: converting TotalCharges to numeric
+[ 2026-08-27 21:59:06,764 ] root - INFO - Dropping customerID
+[ 2026-08-27 21:59:06,771 ] root - INFO - Encoding target variable
+[ 2026-08-27 21:59:06,773 ] root - INFO - Splitting data into train and test sets

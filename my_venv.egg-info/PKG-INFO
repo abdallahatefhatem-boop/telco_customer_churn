@@ -1,0 +1,88 @@
+Metadata-Version: 2.4
+Name: my-venv
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: evidently>=0.7.21
+Requires-Dist: fastapi>=0.141.1
+Requires-Dist: kagglehub>=1.0.2
+Requires-Dist: matplotlib>=3.11.1
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: pytest>=9.1.1
+Requires-Dist: scikit-learn>=1.9.0
+Requires-Dist: seaborn>=0.13.2
+Requires-Dist: uvicorn>=0.52.4
+Requires-Dist: mlflow>=2.10.0
+Requires-Dist: dagshub>=0.3.40
+Requires-Dist: xgboost>=2.0.3
+Requires-Dist: pydantic>=2.5.3
+Requires-Dist: pyyaml>=6.0.1
+Requires-Dist: onnx>=1.16.0
+Requires-Dist: onnxruntime>=1.17.1
+Requires-Dist: skl2onnx>=1.16.0
+Requires-Dist: onnxmltools>=1.12.0
+
+# Telco Customer Churn Prediction (End-to-End MLOps)
+
+This is an end-to-end Machine Learning project aimed at predicting customer churn in the telecommunications sector. It implements best MLOps practices including automated pipelines, multiple model evaluation, ONNX conversion for fast inference, MLflow & DagsHub experiment tracking, and Docker containerization.
+
+## Features
+
+- **Automated Pipeline**: Ingestion -> Validation -> Transformation -> Training -> Evaluation.
+- **Model Selection**: Automatically trains `RandomForest`, `XGBoost`, and `LogisticRegression`, evaluates them, and selects the best one.
+- **ONNX Inference**: The best model is converted to ONNX (`.onnx`) and loaded using `onnxruntime` in the FastAPI app for highly optimized serving.
+- **Experiment Tracking**: Integrated with **DagsHub** and **MLflow** to log parameters, metrics (accuracy, precision, recall, f1), and models.
+- **Serving**: A fully containerized FastAPI application with a simple UI template.
+- **CI/CD**: GitHub Actions workflow (`.github/workflows/main.yaml`) triggers automated training runs on code changes.
+
+## Setup & Installation
+
+### Option 1: Local Development (Python Virtual Environment)
+
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repo-url>
+   cd telco_customer_churn
+   ```
+2. **Create and activate a virtual environment:**
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   ```
+3. **Install dependencies:**
+   ```bash
+   pip install -e .
+   ```
+
+### Option 2: Docker Containerization
+
+1. **Build the Docker Image:**
+   ```bash
+   docker build -t churn-app:latest .
+   ```
+2. **Run the Container:**
+   ```bash
+   docker run -d -p 8000:8000 churn-app:latest
+   ```
+   The app will be accessible at `http://localhost:8000`.
+
+## Running the Pipeline
+
+To manually run the training pipeline (downloads data, transforms, trains multiple models, selects the best, and converts to ONNX):
+```bash
+python -m customer_churn.pipline.training_pipeline
+```
+
+## Running the App
+If running locally (without Docker):
+```bash
+uvicorn app:app --reload
+```
+Navigate to `http://localhost:8000` to interact with the UI.
+
+## Environment Variables
+
+For MLflow tracking to push to DagsHub, ensure you have the following exported or configured in your environment/CI secrets:
+- `DAGSHUB_USER_TOKEN`

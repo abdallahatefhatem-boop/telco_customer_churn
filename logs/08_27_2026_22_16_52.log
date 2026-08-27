@@ -1,0 +1,8 @@
+[ 2026-08-27 22:16:57,363 ] root - INFO - yaml file: config/config.yaml loaded successfully
+[ 2026-08-27 22:16:57,364 ] root - INFO - yaml file: config/params.yaml loaded successfully
+[ 2026-08-27 22:16:57,366 ] root - INFO - yaml file: config/schema.yaml loaded successfully
+[ 2026-08-27 22:16:57,366 ] root - INFO - created directory at: artifacts
+[ 2026-08-27 22:16:57,366 ] root - INFO - >>>>>> Data Ingestion started <<<<<<
+[ 2026-08-27 22:16:57,366 ] root - INFO - created directory at: artifacts/data_ingestion
+[ 2026-08-27 22:16:57,366 ] root - INFO - Downloading data from kagglehub...
+[ 2026-08-27 22:16:57,835 ] urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.kaggle.com:443

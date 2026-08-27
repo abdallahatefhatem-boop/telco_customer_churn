@@ -1,0 +1,38 @@
+name: Telco Customer Churn Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install httpx
+          pip install -e .
+          
+      - name: Run Tests (Pytest)
+        run: |
+          pytest -v tests/
+          
+      - name: Run Data Pipeline (Training)
+        env:
+          DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_USER_TOKEN }}
+        run: |
+          python -m customer_churn.pipline.training_pipeline
