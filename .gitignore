@@ -3,3 +3,4 @@ __pycache__
 .vscode
 .ipynb_checkpoints
 notebooks/WA_Fn-UseC_-Telco-Customer-Churn.csv
+/artifacts
