@@ -38,3 +38,33 @@ class DataValidation:
 
         except Exception as e:
             raise Customer_churn_Exception(e, sys)
+
+    def detect_data_drift(self):
+        try:
+            import pandas as pd
+            from evidently import Report
+            from evidently.presets import DataDriftPreset
+            
+            data = pd.read_csv(self.data_ingestion_artifact.data_file_path)
+            
+            # Simulate drift checking by splitting the dataset
+            # (In production, 'reference_data' would be historical training data)
+            reference_data = data.sample(frac=0.5, random_state=42)
+            current_data = data.drop(reference_data.index)
+            
+            report = Report(metrics=[DataDriftPreset()])
+            snapshot = report.run(reference_data=reference_data, current_data=current_data)
+            
+            # Save the report as HTML for visual appeal
+            html_report_path = os.path.join(self.config.root_dir, "drift_report.html")
+            snapshot.save_html(html_report_path)
+            
+            # Save as JSON for DVC/programmatic tracking
+            json_report_path = os.path.join(self.config.root_dir, "drift_report.json")
+            with open(json_report_path, "w") as f:
+                f.write(snapshot.json())
+            
+            logging.info(f"Data drift reports saved at: {html_report_path} and {json_report_path}")
+            
+        except Exception as e:
+            raise Customer_churn_Exception(e, sys)

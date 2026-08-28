@@ -1,0 +1,55 @@
+stages:
+  data_ingestion:
+    cmd: uv run python -m customer_churn.pipline.stage_01_data_ingestion
+    deps:
+      - customer_churn/pipline/stage_01_data_ingestion.py
+      - customer_churn/components/data_ingestion.py
+      - config/config.yaml
+    outs:
+      - artifacts/data_ingestion
+
+  data_validation:
+    cmd: uv run python -m customer_churn.pipline.stage_02_data_validation
+    deps:
+      - customer_churn/pipline/stage_02_data_validation.py
+      - customer_churn/components/data_validation.py
+      - artifacts/data_ingestion/WA_Fn-UseC_-Telco-Customer-Churn.csv
+      - config/schema.yaml
+    outs:
+      - artifacts/data_validation/status.txt
+      - artifacts/data_validation/drift_report.html
+      - artifacts/data_validation/drift_report.json
+
+  data_transformation:
+    cmd: uv run python -m customer_churn.pipline.stage_03_data_transformation
+    deps:
+      - customer_churn/pipline/stage_03_data_transformation.py
+      - customer_churn/components/data_transformation.py
+      - artifacts/data_ingestion/WA_Fn-UseC_-Telco-Customer-Churn.csv
+      - artifacts/data_validation/status.txt
+    outs:
+      - artifacts/data_transformation/preprocessor.pkl
+      - artifacts/data_transformation/train.csv
+      - artifacts/data_transformation/test.csv
+
+  model_trainer:
+    cmd: uv run python -m customer_churn.pipline.stage_04_model_trainer
+    deps:
+      - customer_churn/pipline/stage_04_model_trainer.py
+      - customer_churn/components/model_trainer.py
+      - artifacts/data_transformation/train.csv
+      - artifacts/data_transformation/test.csv
+      - config/params.yaml
+    outs:
+      - artifacts/model_trainer/model.pkl
+
+  model_evaluation:
+    cmd: uv run python -m customer_churn.pipline.stage_05_model_evaluation
+    deps:
+      - customer_churn/pipline/stage_05_model_evaluation.py
+      - customer_churn/components/model_evaluation.py
+      - artifacts/data_transformation/test.csv
+      - artifacts/model_trainer/model.pkl
+      - artifacts/data_transformation/preprocessor.pkl
+    outs:
+      - artifacts/model_evaluation/metrics.json

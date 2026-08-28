@@ -1,0 +1,32 @@
+[ 2026-08-28 08:55:47,312 ] root - INFO - >>>>>> Data Validation stage started <<<<<<
+[ 2026-08-28 08:55:47,315 ] root - INFO - yaml file: config/config.yaml loaded successfully
+[ 2026-08-28 08:55:47,315 ] root - INFO - yaml file: config/params.yaml loaded successfully
+[ 2026-08-28 08:55:47,317 ] root - INFO - yaml file: config/schema.yaml loaded successfully
+[ 2026-08-28 08:55:47,317 ] root - INFO - created directory at: artifacts
+[ 2026-08-28 08:55:47,317 ] root - INFO - created directory at: artifacts/data_validation
+[ 2026-08-28 08:55:47,317 ] root - INFO - created directory at: artifacts/data_ingestion
+[ 2026-08-28 08:55:50,566 ] asyncio - DEBUG - Using selector: EpollSelector
+[ 2026-08-28 08:55:54,479 ] root - ERROR - Error occurred python script name [/home/mg/my_venv/customer_churn/pipline/stage_02_data_validation.py] line number [27] error message [Error occurred python script name [/home/mg/my_venv/customer_churn/components/data_validation.py] line number [60] error message ['Report' object has no attribute 'save_html']]
+Traceback (most recent call last):
+  File "/home/mg/my_venv/customer_churn/components/data_validation.py", line 60, in detect_data_drift
+    report.save_html(html_report_path)
+    ^^^^^^^^^^^^^^^^
+AttributeError: 'Report' object has no attribute 'save_html'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mg/my_venv/customer_churn/pipline/stage_02_data_validation.py", line 27, in main
+    data_validation.detect_data_drift()
+  File "/home/mg/my_venv/customer_churn/components/data_validation.py", line 69, in detect_data_drift
+    raise Customer_churn_Exception(e, sys)
+customer_churn.exception.Customer_churn_Exception: Error occurred python script name [/home/mg/my_venv/customer_churn/components/data_validation.py] line number [60] error message ['Report' object has no attribute 'save_html']
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mg/my_venv/customer_churn/pipline/stage_02_data_validation.py", line 36, in <module>
+    obj.main()
+  File "/home/mg/my_venv/customer_churn/pipline/stage_02_data_validation.py", line 30, in main
+    raise Customer_churn_Exception(e, sys)
+customer_churn.exception.Customer_churn_Exception: Error occurred python script name [/home/mg/my_venv/customer_churn/pipline/stage_02_data_validation.py] line number [27] error message [Error occurred python script name [/home/mg/my_venv/customer_churn/components/data_validation.py] line number [60] error message ['Report' object has no attribute 'save_html']]

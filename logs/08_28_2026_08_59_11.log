@@ -1,0 +1,12 @@
+[ 2026-08-28 08:59:12,093 ] root - INFO - >>>>>> Data Validation stage started <<<<<<
+[ 2026-08-28 08:59:12,098 ] root - INFO - yaml file: config/config.yaml loaded successfully
+[ 2026-08-28 08:59:12,100 ] root - INFO - yaml file: config/params.yaml loaded successfully
+[ 2026-08-28 08:59:12,104 ] root - INFO - yaml file: config/schema.yaml loaded successfully
+[ 2026-08-28 08:59:12,105 ] root - INFO - created directory at: artifacts
+[ 2026-08-28 08:59:12,105 ] root - INFO - created directory at: artifacts/data_validation
+[ 2026-08-28 08:59:12,105 ] root - INFO - created directory at: artifacts/data_ingestion
+[ 2026-08-28 08:59:15,220 ] asyncio - DEBUG - Using selector: EpollSelector
+[ 2026-08-28 08:59:18,972 ] root - INFO - Data drift reports saved at: artifacts/data_validation/drift_report.html and artifacts/data_validation/drift_report.json
+[ 2026-08-28 08:59:18,975 ] root - INFO - >>>>>> Data Validation stage completed <<<<<<
+
+x==========x

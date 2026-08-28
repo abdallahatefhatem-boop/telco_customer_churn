@@ -1,0 +1,18 @@
+[ 2026-08-28 08:59:27,331 ] root - INFO - >>>>>> Model Trainer stage started <<<<<<
+[ 2026-08-28 08:59:27,335 ] root - INFO - yaml file: config/config.yaml loaded successfully
+[ 2026-08-28 08:59:27,336 ] root - INFO - yaml file: config/params.yaml loaded successfully
+[ 2026-08-28 08:59:27,338 ] root - INFO - yaml file: config/schema.yaml loaded successfully
+[ 2026-08-28 08:59:27,338 ] root - INFO - created directory at: artifacts
+[ 2026-08-28 08:59:27,338 ] root - INFO - created directory at: artifacts/model_trainer
+[ 2026-08-28 08:59:27,338 ] root - INFO - created directory at: artifacts/data_transformation
+[ 2026-08-28 08:59:27,338 ] root - INFO - Loading train and test data for model training.
+[ 2026-08-28 08:59:27,375 ] root - INFO - Training and evaluating multiple models...
+[ 2026-08-28 08:59:28,071 ] root - INFO - RandomForest Accuracy: 0.8069552874378992
+[ 2026-08-28 08:59:30,278 ] root - INFO - XGBoost Accuracy: 0.8055358410220014
+[ 2026-08-28 08:59:30,305 ] root - INFO - LogisticRegression Accuracy: 0.8204400283889283
+[ 2026-08-28 08:59:30,305 ] root - INFO - Best model found: LogisticRegression with Accuracy: 0.8204400283889283
+[ 2026-08-28 08:59:30,305 ] root - INFO - Saving best model to artifacts/model_trainer/model.pkl
+[ 2026-08-28 08:59:30,306 ] root - INFO - Object saved successfully at: artifacts/model_trainer/model.pkl
+[ 2026-08-28 08:59:30,306 ] root - INFO - >>>>>> Model Trainer stage completed <<<<<<
+
+x==========x

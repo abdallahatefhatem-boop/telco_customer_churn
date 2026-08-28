@@ -1,116 +1,176 @@
-# Telco Customer Churn Prediction (End-to-End MLOps)
+<div align="center">
+  <pre>
+  _______  _                  _____ _                     
+ |__   __|| |                / ____| |                    
+    | |___| | ___ ___ ______| |    | |__  _   _ _ __ _ __ 
+    | / _ \ |/ __/ _ \______| |    | '_ \| | | | '__| '_ \
+    | \__ / | (_| (_) |     | |____| | | | |_| | |  | | | |
+    |_|___|_|\___\___/       \_____|_| |_|\__,_|_|  |_| |_|
+  </pre>
+  <h1>🚀 Telco Customer Churn Prediction (End-to-End MLOps)</h1>
+  <p><i>A Production-Grade Machine Learning Pipeline using FastAPI, ONNX, DagsHub, MLflow, Docker, and DVC</i></p>
+  
+  [![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
+  [![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com/)
+  [![DVC](https://img.shields.io/badge/DVC-Data_Version_Control-blue.svg?logo=dvc)](https://dvc.org/)
+  [![MLflow](https://img.shields.io/badge/MLflow-Tracking-0194E2.svg?logo=mlflow)](https://mlflow.org/)
+  [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker)](https://www.docker.com/)
+  [![Evidently AI](https://img.shields.io/badge/Evidently-Data_Drift-orange.svg)](https://evidentlyai.com/)
+  [![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF.svg?logo=githubactions)](https://github.com/features/actions)
+</div>
 
-This repository demonstrates a complete, production-grade Machine Learning Operations (MLOps) pipeline. It aims to predict customer churn in the telecommunications sector using historical customer data. 
+---
 
-The architecture bridges the gap between raw data and a highly optimized, served model, employing industry-standard tools like **FastAPI, ONNX, DagsHub, MLflow, and Docker**.
+## ✨ Features Checklist
+- [x] **Automated Data Ingestion:** Fetches data directly from Kaggle.
+- [x] **Robust Data Validation:** Validates schema and detects **Data Drift** using `Evidently AI`.
+- [x] **DVC Orchestration:** Intelligently caches and tracks the entire pipeline DAG.
+- [x] **Model Ensemble:** Tests Random Forest, XGBoost, and Logistic Regression.
+- [x] **Experiment Tracking:** Fully integrated with MLflow & DagsHub.
+- [x] **ONNX Acceleration:** Model converted to ONNX for blazing-fast inference.
+- [x] **FastAPI UI/API:** Beautiful HTML templates & high-performance API.
+- [x] **Automated CI/CD:** GitHub Actions workflow powered by `uv` for instant testing and training.
+
+---
+
+## 📂 Professional Directory Structure
+
+```text
+📦 telco_customer_churn
+ ┣ 📂 artifacts/              # Ignored by Git, tracked by DVC (Data/Models)
+ ┣ 📂 config/                 # YAML configurations (schema, params)
+ ┣ 📂 customer_churn/         # Core Application Code
+ ┃ ┣ 📂 components/           # ML logic (Ingestion, Transformation, etc.)
+ ┃ ┣ 📂 pipline/              # DVC Pipeline Stage Runners
+ ┃ ┗ 📂 entity/               # Dataclasses & Types
+ ┣ 📂 logs/                   # Time-stamped execution logs
+ ┣ 📂 templates/              # FastAPI HTML UI
+ ┣ 📂 tests/                  # Pytest automated testing suite
+ ┣ 📜 dvc.yaml                # Pipeline execution graph
+ ┣ 📜 app.py                  # FastAPI Application Entry
+ ┣ 📜 Makefile                # Centralized task management
+ ┗ 📜 pyproject.toml          # Project dependencies (managed by uv)
+```
+
+---
+
+## 📖 Overview
+
+This repository demonstrates a complete, highly optimized, and automated Machine Learning Operations (MLOps) pipeline. It predicts customer churn in the telecommunications sector using historical customer data.
+
+This repository demonstrates a complete, highly optimized, and automated Machine Learning Operations (MLOps) pipeline. It predicts customer churn in the telecommunications sector using historical customer data.
+
+The project bridges the gap between raw data and a **highly optimized, served model**. It emphasizes automation, reproducibility, robust validation (Data Drift), and rapid deployment.
 
 ---
 
 ## 🏗️ Architecture & Component Deep Dive
 
-The project is structured into distinct modular components, managed by a central configuration system to ensure reproducibility and maintainability.
+The pipeline is managed by **DVC (Data Version Control)** to ensure that every stage is tracked, cached, and fully reproducible.
 
-### 1. Data Ingestion (`data_ingestion.py`)
-This component acts as the entry point of the pipeline. It programmatically connects to Kaggle using the `kagglehub` library to fetch the `blastchar/telco-customer-churn` dataset. 
-- **Why?** Automating ingestion ensures that the pipeline can run completely unattended, a critical requirement for CI/CD environments. The data is cached locally in the `artifacts/data_ingestion` directory to prevent redundant downloads on subsequent runs.
+```mermaid
+graph TD
+    A[(Kaggle Data)] -->|Ingestion| B(Data Ingestion)
+    B -->|Raw Data| C(Data Validation)
+    C -->|Evidently AI| D[Data Drift Report]
+    C -->|Validated Data| E(Data Transformation)
+    E -->|Train/Test CSVs| F(Model Trainer)
+    F -->|Ensemble Models| G(Model Evaluation)
+    G -->|MLflow Tracking| H[DagsHub Server]
+    G -->|Winner Model| I(ONNX Conversion)
+    I --> J[FastAPI Serving Layer]
+```
 
-### 2. Data Validation (`data_validation.py`)
-Before any machine learning takes place, the incoming dataset is validated against a strict schema defined in `config/schema.yaml`. 
-- **Why?** Data drift or upstream schema changes are common causes of silent ML failures. This component acts as a gatekeeper; if the columns or expected data types change, the pipeline halts immediately, logging the failure status to `artifacts/data_validation/status.txt`.
+### 1. Data Ingestion 📥
+Programmatically connects to Kaggle to fetch the dataset. 
+- **Automated**: Ensures pipeline runs completely unattended in CI/CD.
+- **DVC Tracked**: Raw data is cached locally in `artifacts/data_ingestion`.
 
-### 3. Data Transformation (`data_transformation.py`)
-This is where raw data is converted into a format suitable for machine learning algorithms. 
-- It utilizes a Scikit-Learn `ColumnTransformer` embedded within a `Pipeline`.
-- **Numerical Features**: Missing values are imputed using the median, and values are scaled using `StandardScaler`.
-- **Categorical Features**: Missing values are imputed using the mode, and categorical text is encoded into numeric arrays using `OneHotEncoder`.
-- The fitted preprocessor is saved as `preprocessor.pkl`. This exact object is required during inference to guarantee that live user input is scaled and encoded exactly like the training data.
+### 2. Data Validation & Drift Detection 🛡️
+Validates the dataset against a strict schema (`config/schema.yaml`).
+- **Data Drift Detection**: Integrates **Evidently AI** to perform deep statistical comparisons on the incoming data, generating rich HTML/JSON reports (`drift_report.html`) to catch silent ML failures.
 
-### 4. Model Training & Selection (`model_trainer.py`)
-Instead of assuming a single algorithm works best, this component trains an ensemble of powerful classifiers:
-- **Random Forest**
-- **XGBoost**
-- **Logistic Regression**
+### 3. Data Transformation ⚙️
+Converts raw data into machine learning-ready formats.
+- **Pipelines**: Imputes missing values, applies `StandardScaler` to numericals, and `OneHotEncoder` to categoricals.
+- **Artifacts**: Saves the precise `preprocessor.pkl` to guarantee identical scaling during live user inference.
 
-**How it works**: It pulls hyperparameters dynamically from `config/params.yaml`. After training all models, it evaluates them against the test set. The model achieving the highest accuracy score is automatically declared the "Best Model" and is passed to the next stage.
+### 4. Model Training & Selection 🧠
+Trains an ensemble of powerful classifiers: **Random Forest, XGBoost, and Logistic Regression**.
+- **Dynamic**: Pulls hyperparameters from `config/params.yaml`. The best performing model automatically advances.
 
-### 5. Model Evaluation & ONNX Conversion (`model_evaluation.py`)
-This is the most critical MLOps step in the pipeline.
-- **Experiment Tracking**: It initializes a connection to **DagsHub** and starts an **MLflow** run. It logs the accuracy, precision, recall, and F1 score, alongside the exact parameters used by the winning model. This provides a historical audit trail of all experiments.
-- **ONNX Conversion**: The winning model (e.g., Logistic Regression or Random Forest) is converted from a Python-specific object into an **ONNX (Open Neural Network Exchange)** graph. 
-- **Why ONNX?** ONNX decouples the model from its training framework (scikit-learn/xgboost). Using `onnxruntime` during prediction offers drastically faster inference times, lower memory footprint, and the ability to deploy the model in non-Python environments (like C++ or Rust) in the future.
+### 5. Model Evaluation & ONNX Conversion 🏆
+- **Experiment Tracking**: Logs metrics (accuracy, precision, recall, F1) to **DagsHub** and **MLflow**.
+- **ONNX Optimization**: Converts the Scikit-learn/XGBoost model into an **ONNX (Open Neural Network Exchange)** graph. 
+  > [!TIP]
+  > Using `onnxruntime` drastically reduces inference latency and memory usage compared to standard Python prediction.
 
-### 6. Serving Layer (`app.py` & `prediction_pipeline.py`)
-The model is served using **FastAPI**, a modern, high-performance web framework.
-- The `PredictPipeline` loads the ONNX model and the `preprocessor.pkl`. 
-- User input is captured via an HTML form rendered by Jinja2, mapped to a Pandas DataFrame by the `CustomData` class, transformed, and fed into the ONNX Inference Session to return a real-time churn prediction.
+### 6. Serving Layer (FastAPI) ⚡
+A modern, high-performance web framework serves the UI and API endpoints, loading the ONNX model and predicting churn in real-time.
+
+---
+
+## 🛠️ Advanced MLOps Tooling
+
+### Data Version Control (DVC)
+Data and models are large binaries that bloat Git. **DVC** solves this:
+- Tracks `artifacts/` using lightweight metadata files (`dvc.yaml`).
+- Defines the DAG (Directed Acyclic Graph) of the pipeline. If you change a preprocessing parameter, `dvc repro` intelligently re-runs only the dependent stages.
+
+### Centralized Task Management (Makefile)
+Developer workflows are simplified into memorable targets:
+- `make run`: Starts FastAPI locally.
+- `make test`: Executes Pytest suite.
+- `make install_req`: Syncs dependencies using `uv`.
+- `make dvc_add` & `clean_logs`: Maintenance commands.
+
+### Extensive Logging
+Every operation is written to time-stamped files in `logs/` for deep forensic debugging in production.
 
 ---
 
 ## 🚀 Setup & Installation Guide
 
-### Option 1: Local Virtual Environment Setup
-Ideal for development and debugging.
+### Option 1: Local Setup (via Makefile)
+Ideal for development.
 
 1. **Clone the repository:**
    ```bash
    git clone <your-repo-url>
    cd telco_customer_churn
    ```
-2. **Create and activate a virtual environment:**
+2. **Create environment and install dependencies:**
    ```bash
-   python -m venv .venv
-   source .venv/bin/activate
+   make creat_venv_ubuntu_activate # or creat_venv_windows_activate
+   make install_req
    ```
-3. **Install dependencies:**
+3. **Execute the full DVC Pipeline (Ingestion to Evaluation):**
    ```bash
-   pip install -e .
+   uv run dvc repro
+   ```
+4. **Run the Application:**
+   ```bash
+   make run
    ```
 
 ### Option 2: Docker Containerization
-Ideal for production deployment (AWS, GCP, Azure). 
-
-The included `Dockerfile` ensures the application runs identically regardless of the host machine, bundling the OS, dependencies, and code into a single image.
-1. **Build the Docker Image:**
-   ```bash
-   docker build -t churn-app:latest .
-   ```
-2. **Run the Container:**
-   ```bash
-   docker run -d -p 8000:8000 churn-app:latest
-   ```
-   The app will be accessible at `http://localhost:8000`.
-
----
-
-## 🧪 Automated Testing
-
-Testing ensures pipeline stability as the codebase evolves. Tests are located in the `tests/` directory and use the `pytest` framework.
-
-- **`test_api.py`**: Verifies that the FastAPI endpoints (`/` and `/predict`) return `200 OK` responses and handle invalid data (e.g., 422 Unprocessable Entity) correctly using `TestClient`.
-- **`test_data_models.py`**: Ensures the `CustomData` class correctly maps HTML form inputs into the exact Pandas DataFrame format expected by the `ColumnTransformer`.
-
-**To run the tests locally:**
+Ideal for production deployment (AWS, GCP, Azure).
 ```bash
-pytest -v tests/
+docker build -t churn-app:latest .
+docker run -d -p 8000:8000 churn-app:latest
 ```
+Access at `http://localhost:8000`.
 
 ---
 
 ## 🔄 CI/CD Workflow (GitHub Actions)
 
-Continuous Integration and Continuous Deployment are configured via `.github/workflows/main.yaml`.
+Continuous Integration is configured via `.github/workflows/main.yaml`.
+On every push to `main` or Pull Request:
+1. **Ultra-Fast Setup**: Provisions Ubuntu and uses `astral-sh/setup-uv` to instantly cache and install dependencies.
+2. **Runs Pytest**: Halts deployment if API or Data Models break.
+3. **Executes Pipeline (DVC)**: Automatically runs `uv run dvc repro` in the cloud to evaluate data drift and train models, logging metrics to DagsHub.
 
-Every time code is pushed to the `main` branch, a GitHub Action runner is triggered. It performs the following sequential steps:
-1. Provisions an Ubuntu environment and sets up Python 3.12.
-2. Caches `pip` dependencies to dramatically reduce build times.
-3. Installs project dependencies.
-4. **Runs Pytest**: Executes the automated test suite. If any test fails, the pipeline halts, preventing broken code from reaching production.
-5. **Executes the Training Pipeline**: If tests pass, it runs `python -m customer_churn.pipline.training_pipeline`, effectively training the model in the cloud and pushing the metrics to DagsHub.
-
----
-
-## 🔐 Environment Variables
-
-Because the GitHub Actions CI/CD runner automatically logs runs to DagsHub, it requires authentication.
-You **must** configure the following secret in your GitHub Repository settings (`Settings > Secrets and variables > Actions`):
-- `DAGSHUB_USER_TOKEN`: Your personal DagsHub API token.
+> [!IMPORTANT]
+> The GitHub Actions runner automatically logs runs to DagsHub. You **must** configure the following secret in your GitHub Repository settings (`Settings > Secrets and variables > Actions`):
+> - `DAGSHUB_USER_TOKEN`: Your personal DagsHub API token.
