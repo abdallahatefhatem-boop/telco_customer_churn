@@ -30,12 +30,12 @@ jobs:
         run: |
           uv sync
 
-      - name: Run Tests (Pytest)
-        run: |
-          make test
-          
-      - name: Run Data Pipeline (Training)
+      - name: Run Data Pipeline (DVC)
         env:
           DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_USER_TOKEN }}
         run: |
           uv run dvc repro
+          
+      - name: Run Tests (Pytest)
+        run: |
+          make test

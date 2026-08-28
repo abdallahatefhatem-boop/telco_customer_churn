@@ -168,8 +168,8 @@ Access at `http://localhost:8000`.
 Continuous Integration is configured via `.github/workflows/main.yaml`.
 On every push to `main` or Pull Request:
 1. **Ultra-Fast Setup**: Provisions Ubuntu and uses `astral-sh/setup-uv` to instantly cache and install dependencies.
-2. **Runs Pytest**: Halts deployment if API or Data Models break.
-3. **Executes Pipeline (DVC)**: Automatically runs `uv run dvc repro` in the cloud to evaluate data drift and train models, logging metrics to DagsHub.
+2. **Executes Pipeline (DVC)**: Automatically runs `uv run dvc repro` in the cloud to evaluate data drift and train models, generating all required artifacts.
+3. **Runs Pytest**: Executes the automated tests against the newly generated models and endpoints. Halts deployment if any checks fail.
 
 > [!IMPORTANT]
 > The GitHub Actions runner automatically logs runs to DagsHub. You **must** configure the following secret in your GitHub Repository settings (`Settings > Secrets and variables > Actions`):
