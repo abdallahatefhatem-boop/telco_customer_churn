@@ -1,0 +1,143 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: uv run python -m customer_churn.pipline.stage_01_data_ingestion
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 6d0786dbae4d04c800bf6c7dfd02a947
+      size: 1084
+    - path: customer_churn/components/data_ingestion.py
+      hash: md5
+      md5: 7c0cecf53f5fe17c3c115139c40d700a
+      size: 1528
+    - path: customer_churn/pipline/stage_01_data_ingestion.py
+      hash: md5
+      md5: 0db32dbedf7e5c7b4637adf083ae029d
+      size: 1006
+    outs:
+    - path: artifacts/data_ingestion
+      hash: md5
+      md5: 063d451250fb0faa73bc60935e759442.dir
+      size: 977501
+      nfiles: 1
+  data_validation:
+    cmd: uv run python -m customer_churn.pipline.stage_02_data_validation
+    deps:
+    - path: artifacts/data_ingestion/WA_Fn-UseC_-Telco-Customer-Churn.csv
+      hash: md5
+      md5: 0f9de68e012bd3aed5fa7cdc9fc421af
+      size: 977501
+    - path: config/schema.yaml
+      hash: md5
+      md5: 62d7d9cc95b35c8944618b2582152404
+      size: 508
+    - path: customer_churn/components/data_validation.py
+      hash: md5
+      md5: e4bd7613475dd33b87f89bf6824efeea
+      size: 2939
+    - path: customer_churn/pipline/stage_02_data_validation.py
+      hash: md5
+      md5: 6912a411a508412f715fcf469b627ac7
+      size: 1553
+    outs:
+    - path: artifacts/data_validation/drift_report.html
+      hash: md5
+      md5: b7f255d8709e0922b63799e7a8040f67
+      size: 4112727
+    - path: artifacts/data_validation/drift_report.json
+      hash: md5
+      md5: 7657638f6f8ac26409f5345d8bcb55ef
+      size: 6664
+    - path: artifacts/data_validation/status.txt
+      hash: md5
+      md5: 86e6a2f694c57a675b3e2da6b95ff9ba
+      size: 23
+  data_transformation:
+    cmd: uv run python -m customer_churn.pipline.stage_03_data_transformation
+    deps:
+    - path: artifacts/data_ingestion/WA_Fn-UseC_-Telco-Customer-Churn.csv
+      hash: md5
+      md5: 0f9de68e012bd3aed5fa7cdc9fc421af
+      size: 977501
+    - path: artifacts/data_validation/status.txt
+      hash: md5
+      md5: 86e6a2f694c57a675b3e2da6b95ff9ba
+      size: 23
+    - path: customer_churn/components/data_transformation.py
+      hash: md5
+      md5: edc0e22efc013290c8a3b16d8c24d7d6
+      size: 5060
+    - path: customer_churn/pipline/stage_03_data_transformation.py
+      hash: md5
+      md5: 0daa683719624f1554ff728e4ca05aff
+      size: 1784
+    outs:
+    - path: artifacts/data_transformation/preprocessor.pkl
+      hash: md5
+      md5: 13caa03b8efb5e47e3c2aae4030c6a29
+      size: 8060
+    - path: artifacts/data_transformation/test.csv
+      hash: md5
+      md5: 29a41e40cd145b7e089e12360af7c40b
+      size: 240623
+    - path: artifacts/data_transformation/train.csv
+      hash: md5
+      md5: 934c28e047dc78511e7bbc57ba8a9be1
+      size: 961823
+  model_trainer:
+    cmd: uv run python -m customer_churn.pipline.stage_04_model_trainer
+    deps:
+    - path: artifacts/data_transformation/test.csv
+      hash: md5
+      md5: 29a41e40cd145b7e089e12360af7c40b
+      size: 240623
+    - path: artifacts/data_transformation/train.csv
+      hash: md5
+      md5: 934c28e047dc78511e7bbc57ba8a9be1
+      size: 961823
+    - path: config/params.yaml
+      hash: md5
+      md5: 9b661f24a49995292bdb7b7a025d1674
+      size: 247
+    - path: customer_churn/components/model_trainer.py
+      hash: md5
+      md5: e4a79a0ba7f3cd85e37f391521379528
+      size: 3082
+    - path: customer_churn/pipline/stage_04_model_trainer.py
+      hash: md5
+      md5: a85500b4bcea8c940d2ae978ea184e76
+      size: 1632
+    outs:
+    - path: artifacts/model_trainer/model.pkl
+      hash: md5
+      md5: 889c46ab9008808dec97c23ede1547fd
+      size: 1116
+  model_evaluation:
+    cmd: uv run python -m customer_churn.pipline.stage_05_model_evaluation
+    deps:
+    - path: artifacts/data_transformation/preprocessor.pkl
+      hash: md5
+      md5: 13caa03b8efb5e47e3c2aae4030c6a29
+      size: 8060
+    - path: artifacts/data_transformation/test.csv
+      hash: md5
+      md5: 29a41e40cd145b7e089e12360af7c40b
+      size: 240623
+    - path: artifacts/model_trainer/model.pkl
+      hash: md5
+      md5: 889c46ab9008808dec97c23ede1547fd
+      size: 1116
+    - path: customer_churn/components/model_evaluation.py
+      hash: md5
+      md5: 97cda5b9d5ca6bc0112fcd9c803d5ab1
+      size: 4776
+    - path: customer_churn/pipline/stage_05_model_evaluation.py
+      hash: md5
+      md5: aa24f07d50518c0e15872d96ab77b7f8
+      size: 2022
+    outs:
+    - path: artifacts/model_evaluation/metrics.json
+      hash: md5
+      md5: e065b0ded0d892b0abcda5bc3382169d
+      size: 127

@@ -1,0 +1,19 @@
+[ 2026-08-28 08:59:23,514 ] root - INFO - >>>>>> Data Transformation stage started <<<<<<
+[ 2026-08-28 08:59:23,517 ] root - INFO - yaml file: config/config.yaml loaded successfully
+[ 2026-08-28 08:59:23,518 ] root - INFO - yaml file: config/params.yaml loaded successfully
+[ 2026-08-28 08:59:23,519 ] root - INFO - yaml file: config/schema.yaml loaded successfully
+[ 2026-08-28 08:59:23,519 ] root - INFO - created directory at: artifacts
+[ 2026-08-28 08:59:23,519 ] root - INFO - created directory at: artifacts/data_transformation
+[ 2026-08-28 08:59:23,520 ] root - INFO - created directory at: artifacts/data_validation
+[ 2026-08-28 08:59:23,558 ] root - INFO - Cleaning data: converting TotalCharges to numeric
+[ 2026-08-28 08:59:23,566 ] root - INFO - Dropping customerID
+[ 2026-08-28 08:59:23,569 ] root - INFO - Encoding target variable
+[ 2026-08-28 08:59:23,571 ] root - INFO - Splitting data into train and test sets
+[ 2026-08-28 08:59:23,577 ] root - INFO - Applying preprocessing object on training and testing dataframes.
+[ 2026-08-28 08:59:23,577 ] root - INFO - Categorical columns: ['gender', 'SeniorCitizen', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod']
+[ 2026-08-28 08:59:23,577 ] root - INFO - Numerical columns: ['tenure', 'MonthlyCharges', 'TotalCharges']
+[ 2026-08-28 08:59:23,945 ] root - INFO - Saved preprocessor object.
+[ 2026-08-28 08:59:23,951 ] root - INFO - Object saved successfully at: artifacts/data_transformation/preprocessor.pkl
+[ 2026-08-28 08:59:23,953 ] root - INFO - >>>>>> Data Transformation stage completed <<<<<<
+
+x==========x

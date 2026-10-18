@@ -1,0 +1,15 @@
+[ 2026-08-28 08:50:23,057 ] root - INFO - >>>>>> Data Ingestion stage started <<<<<<
+[ 2026-08-28 08:50:23,061 ] root - INFO - yaml file: config/config.yaml loaded successfully
+[ 2026-08-28 08:50:23,064 ] root - INFO - yaml file: config/params.yaml loaded successfully
+[ 2026-08-28 08:50:23,066 ] root - INFO - yaml file: config/schema.yaml loaded successfully
+[ 2026-08-28 08:50:23,066 ] root - INFO - created directory at: artifacts
+[ 2026-08-28 08:50:23,067 ] root - INFO - created directory at: artifacts/data_ingestion
+[ 2026-08-28 08:50:23,067 ] root - INFO - Downloading data from kagglehub...
+[ 2026-08-28 08:50:23,285 ] urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.kaggle.com:443
+[ 2026-08-28 08:50:23,692 ] urllib3.connectionpool - DEBUG - https://api.kaggle.com:443 "POST /v1/datasets.DatasetApiService/GetDataset HTTP/1.1" 200 None
+[ 2026-08-28 08:50:23,698 ] root - INFO - Data downloaded to: /home/mg/.cache/kagglehub/datasets/blastchar/telco-customer-churn/versions/1
+[ 2026-08-28 08:50:23,699 ] root - INFO - Copying data to artifacts folder...
+[ 2026-08-28 08:50:23,702 ] root - INFO - Data copied to: artifacts/data_ingestion/WA_Fn-UseC_-Telco-Customer-Churn.csv
+[ 2026-08-28 08:50:23,702 ] root - INFO - >>>>>> Data Ingestion stage completed <<<<<<
+
+x==========x

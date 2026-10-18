@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Prediction</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+        button { padding: 10px 15px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .result { margin-top: 20px; font-size: 1.2em; font-weight: bold; color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Customer Churn Prediction</h2>
+    <form action="/predict" method="post">
+        
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select name="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="SeniorCitizen">Senior Citizen (0 for No, 1 for Yes)</label>
+            <input type="number" name="SeniorCitizen" min="0" max="1" required>
+        </div>
+
+        <!-- Adding a few key features for demo, in reality we need all 19 -->
+        <div class="form-group">
+            <label for="Partner">Partner</label>
+            <select name="Partner" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="Dependents">Dependents</label>
+            <select name="Dependents" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="tenure">Tenure (Months)</label>
+            <input type="number" name="tenure" required>
+        </div>
+
+        <div class="form-group">
+            <label for="PhoneService">Phone Service</label>
+            <select name="PhoneService" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="MultipleLines">Multiple Lines</label>
+            <select name="MultipleLines" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No phone service">No phone service</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="InternetService">Internet Service</label>
+            <select name="InternetService" required>
+                <option value="DSL">DSL</option>
+                <option value="Fiber optic">Fiber optic</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="OnlineSecurity">Online Security</label>
+            <select name="OnlineSecurity" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No internet service">No internet service</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="OnlineBackup">Online Backup</label>
+            <select name="OnlineBackup" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No internet service">No internet service</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="DeviceProtection">Device Protection</label>
+            <select name="DeviceProtection" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No internet service">No internet service</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="TechSupport">Tech Support</label>
+            <select name="TechSupport" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No internet service">No internet service</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="StreamingTV">Streaming TV</label>
+            <select name="StreamingTV" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No internet service">No internet service</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="StreamingMovies">Streaming Movies</label>
+            <select name="StreamingMovies" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No internet service">No internet service</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="Contract">Contract</label>
+            <select name="Contract" required>
+                <option value="Month-to-month">Month-to-month</option>
+                <option value="One year">One year</option>
+                <option value="Two year">Two year</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="PaperlessBilling">Paperless Billing</label>
+            <select name="PaperlessBilling" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="PaymentMethod">Payment Method</label>
+            <select name="PaymentMethod" required>
+                <option value="Electronic check">Electronic check</option>
+                <option value="Mailed check">Mailed check</option>
+                <option value="Bank transfer (automatic)">Bank transfer (automatic)</option>
+                <option value="Credit card (automatic)">Credit card (automatic)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="MonthlyCharges">Monthly Charges</label>
+            <input type="number" step="0.01" name="MonthlyCharges" required>
+        </div>
+
+        <div class="form-group">
+            <label for="TotalCharges">Total Charges</label>
+            <input type="number" step="0.01" name="TotalCharges" required>
+        </div>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if results %}
+        <div class="result">Prediction: {{ results }}</div>
+    {% endif %}
+    {% if error %}
+        <div class="error">Error: {{ error }}</div>
+    {% endif %}
+</div>
+
+</body>
+</html>

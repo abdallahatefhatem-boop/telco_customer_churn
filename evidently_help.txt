@@ -1,0 +1,138 @@
+Help on class Report in module evidently.core.report:
+
+class Report(builtins.object)
+ |  Report(metrics: List[Union[evidently.core.metric_types.Metric, evidently.core.container.MetricContainer]], metadata: Dict[str, Union[str, Dict[str, str], List[str]]] = None, tags: List[str] = None, model_id: str = None, reference_id: str = None, batch_size: str = None, dataset_id: str = None, include_tests: bool = False)
+ |
+ |  Report lets you structure and run evaluations on the dataset or column-level.
+ |
+ |  You can generate `Report` objects after you get descriptors, or for any existing dataset like a table with ML model logs.
+ |  Use `Report` to:
+ |  - Summarize computed text descriptors across all inputs
+ |  - Analyze any tabular dataset (descriptive stats, quality, drift)
+ |  - Evaluate AI system performance (regression, classification, ranking, etc.)
+ |
+ |  Each `Report` runs a computation and visualizes a set of Metrics and conditional Tests.
+ |  If you pass two datasets, you get a side-by-side comparison.
+ |
+ |  Use `Dataset` to prepare your data and `DataDefinition` to map columns. The `run()` method
+ |  returns a `Snapshot` object with computed results.
+ |
+ |  **Documentation**: See [Report Guide](https://docs.evidentlyai.com/docs/library/report) for detailed usage.
+ |
+ |  Using a preset:
+ |  ```python
+ |  from evidently import Report, Dataset
+ |  from evidently.presets import DataSummaryPreset
+ |
+ |  report = Report([DataSummaryPreset()])
+ |  dataset = Dataset.from_pandas(df, data_definition=DataDefinition())
+ |  snapshot = report.run(dataset, None)
+ |  ```
+ |
+ |  Using custom metrics:
+ |  ```python
+ |  from evidently.metrics import ColumnCount, ValueStats
+ |
+ |  report = Report([ColumnCount(), ValueStats(column="target")])
+ |  snapshot = report.run(dataset, None)
+ |  ```
+ |
+ |  With reference data for drift detection:
+ |  ```python
+ |  from evidently.presets import DataDriftPreset
+ |
+ |  report = Report([DataDriftPreset()])
+ |  snapshot = report.run(current_dataset, reference_dataset)
+ |  ```
+ |
+ |  Methods defined here:
+ |
+ |  __init__(self, metrics: List[Union[evidently.core.metric_types.Metric, evidently.core.container.MetricContainer]], metadata: Dict[str, Union[str, Dict[str, str], List[str]]] = None, tags: List[str] = None, model_id: str = None, reference_id: str = None, batch_size: str = None, dataset_id: str = None, include_tests: bool = False)
+ |      Initialize a Report with metrics and optional metadata.
+ |
+ |      The constructor maps parameters to class attributes. Additional convenience parameters
+ |      (`model_id`, `reference_id`, `batch_size`, `dataset_id`) are stored in the `metadata` dictionary.
+ |
+ |  items(self) -> Sequence[Union[evidently.core.metric_types.Metric, evidently.core.container.MetricContainer]]
+ |      Get the list of metrics and containers in this report.
+ |
+ |      Returns:
+ |      * Sequence of metrics and metric containers configured in the report
+ |
+ |  run(self, current_data: Union[ForwardRef('Dataset'), pandas.core.frame.DataFrame], reference_data: Union[ForwardRef('Dataset'), pandas.core.frame.DataFrame, NoneType] = None, additional_data: Optional[Dict[str, Union[ForwardRef('Dataset'), pandas.core.frame.DataFrame]]] = None, timestamp: Optional[datetime.datetime] = None, metadata: Dict[str, Union[str, Dict[str, str], List[str]]] = None, tags: List[str] = None, name: Optional[str] = None) -> evidently.core.report.Snapshot
+ |      Run the report on datasets and return a `Snapshot` with computed results.
+ |
+ |      Args:
+ |      * `current_data`: Current dataset to evaluate (`pandas.DataFrame` or `Dataset`)
+ |      * `reference_data`: Optional reference dataset for comparison/drift detection (`pandas.DataFrame` or `Dataset`)
+ |      * `additional_data`: Optional dictionary of additional datasets by name
+ |      * `timestamp`: Optional timestamp for the snapshot (defaults to now)
+ |      * `metadata`: Optional metadata to merge with report metadata
+ |      * `tags`: Optional tags to merge with report tags
+ |      * `name`: Optional name for the snapshot
+ |
+ |      Returns:
+ |      * `Snapshot`: Object containing computed metric results, tests, and visualizations.
+ |        Use `Snapshot.save_html()`, `Snapshot.json()`, or `Snapshot.dict()` to export results.
+ |
+ |      Example:
+ |      ```python
+ |      from evidently import Report, Dataset
+ |      from evidently.presets import DataSummaryPreset
+ |
+ |      report = Report([DataSummaryPreset()])
+ |      dataset = Dataset.from_pandas(df, data_definition=DataDefinition())
+ |      snapshot = report.run(dataset, None, name="daily_check")
+ |      snapshot.save_html("report.html")
+ |      ```
+ |
+ |  set_batch_size(self, batch_size: str)
+ |      Set the batch size identifier in report metadata.
+ |
+ |      Args:
+ |      * `batch_size`: Batch size identifier string
+ |
+ |      Returns:
+ |      * Self for method chaining
+ |
+ |  set_dataset_id(self, dataset_id: str)
+ |      Set the dataset identifier in report metadata.
+ |
+ |      Args:
+ |      * `dataset_id`: Dataset identifier string
+ |
+ |      Returns:
+ |      * Self for method chaining
+ |
+ |  set_model_id(self, model_id: str)
+ |      Set the model identifier in report metadata.
+ |
+ |      Args:
+ |      * `model_id`: Model identifier string
+ |
+ |      Returns:
+ |      * Self for method chaining
+ |
+ |  set_reference_id(self, reference_id: str)
+ |      Set the reference dataset identifier in report metadata.
+ |
+ |      Args:
+ |      * `reference_id`: Reference dataset identifier string
+ |
+ |      Returns:
+ |      * Self for method chaining
+ |
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |
+ |  __dict__
+ |      dictionary for instance variables
+ |
+ |  __weakref__
+ |      list of weak references to the object
+ |
+ |  ----------------------------------------------------------------------
+ |  Data and other attributes defined here:
+ |
+ |  __annotations__ = {'include_tests': <class 'bool'>, 'metadata': typing...
+

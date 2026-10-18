@@ -1,0 +1,2 @@
+Requirement already satisfied: ml_dtypes in ./.venv/lib/python3.12/site-packages (0.4.1)
+Requirement already satisfied: numpy>1.20 in ./.venv/lib/python3.12/site-packages (from ml_dtypes) (2.5.2)
